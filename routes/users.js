@@ -167,7 +167,7 @@ router.post('/register', async (req, res, next) => {
     res.status(201).json(usuario[0])
   } catch (e) {
     // Se maneja los errores en caso de haberlo
-    // Respuesta a la peticion
+    // Respuesta a la peticion   
     next(e)
   }
 })
