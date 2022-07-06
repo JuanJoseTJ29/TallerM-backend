@@ -6,10 +6,11 @@ module.exports = {
         //Datos del host
         host: 'us-cdbr-east-05.cleardb.net',
         //Datos del user
-        user: 'b2a15a7a405153',
+        user: 'b6bb4503146d39',
         //Datos de la contraseña
-        password: '1b937a6f',
+        password: '7b7f043f',
         //Database
-        database: 'heroku_347f24c0f96634b'
+        database: 'heroku_88483ad2dddcb06'
     }
 }
+
