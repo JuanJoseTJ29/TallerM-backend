@@ -20,7 +20,7 @@ router.get('/login', async (req, res) => {
 // Metudo post para logear al usuario
 router.post('/login', async (req, res) => {
   // Parámetros del login con el correo y el password.
-  const { correo, password } = req.body
+  const {id, correo, password } = req.body
 
   // Se realiza la petición para seleccionar todos campos del usuario a la BD
   // Se guarda los datos en la constante user
@@ -37,7 +37,7 @@ router.post('/login', async (req, res) => {
     : await bcrypt.compare(password, passwordHash)
 
   // Si el usuario o password son incorrectos se notificará el error
-  if (!(user && passwordCorrect)) {
+  if (!(id && user && passwordCorrect)) {
     // Respuesta a la peticion
     return res.status(401).json({
       error: 'invalid user or password'
