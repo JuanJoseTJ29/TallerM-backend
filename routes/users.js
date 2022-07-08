@@ -124,7 +124,7 @@ router.post('/edituser/:id', async (req, res, next) => {
 // Metodo POST para crear un nuevo usuario
 router.post('/register', async (req, res, next) => {
   // Parámetros necesarios para crear al nuevo usuario
-  const { name, codstud, password, email, facultad, escuela } = req.body
+  const { name, id, password, email, facultad, escuela } = req.body
 
   // Si el password es nulo la data es inválida
   if (!password) {
@@ -147,7 +147,7 @@ router.post('/register', async (req, res, next) => {
   // se crear la variable newUser con los campos necesarios para guardarla en la BD
   let newUser = {
     name,
-    codstud,
+    id,
     email,
     facultad,
     escuela,
