@@ -3,6 +3,9 @@ require('dotenv').config()
 // Se usa para poder usar las variables de entorno
 // Se declara la express
 const express = require('express')
+const { urlencoded, json } = require('express')
+//PATH
+const path = require('path')
 // Para poder usar el framework de express
 // Se crean las opciones de cors
 let corsOptions = {
@@ -12,6 +15,7 @@ let corsOptions = {
 // Para detectar por donde se usa la api
 // Se importa el helmet
 let helmet = require('helmet')
+
 
 // Para la proteccion de la apio
 // Se crea la app de express
@@ -31,20 +35,30 @@ app.use(express.urlencoded({extended: true, limit: '8mb'}))
 // Se usa el json
 app.use(express.json())
 
+
+
+// middlewares
+//app.use(cors())
+//app.use(urlencoded({extended: true}))
+//app.use(json())
+
 // Importamos la ruta users
 const users = require('./routes/users')
 // Importamos la ruta login
 const login = require('./routes/login')
+const incidencia = require('./routes/incidencias')
 
 // Importamos la ruta not found
 const notFound = require('./middleware/notFound')
 // Importamos el control de errores
 const errors = require('./middleware/errors')
+//const app = require('./app/app')
 
 // Se usa la ruta login
 app.use(login)
 // Se usa la ruta users
 app.use(users)
+app.use(incidencia)
 // Se usa la ruta course
 // Se usa la ruta suggestion
 // Se usa la ruta categories
@@ -56,6 +70,8 @@ app.get('/', (req, res) => {
     gawr: 'gura'
   })
 })
+
+
 
 // Control del 404
 app.use(notFound)
@@ -71,5 +87,11 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`La api esta en http://localhost:${PORT}`)
   })
 }
+
+//app.set('port', PORT)
+// public static files
+
+
+app.use(express.static(path.join(__dirname, '../public')))
 // Se exporta la app
 module.exports = { app }

@@ -36,14 +36,14 @@ router.get('/users', async (req, res, next) => {
 })
 
 // Metodo get para listar a un solo usuarios
-router.get('/users/:id', async (req, res, next) => {
+router.get('/users/:usuario_id', async (req, res, next) => {
   // Parámetro id del usuario para listarlo
-  const { id } = req.params
+  const { usuario_id } = req.params
   // Empesamos con el try
   try {
     // Se accede a la BD y se seleciona  al usuarios a través de su id única
     // Los datos del usuario se guarda en la variable user
-    let user = await pool.query('SELECT * FROM usuarios WHERE id = ?', [id])
+    let user = await pool.query('SELECT * FROM usuarios WHERE usuario_id = ?', [usuario_id])
     // Respuesta a la peticion
     res.status(200).json({
       // Se devuelve el usuario al Frontend
@@ -57,6 +57,7 @@ router.get('/users/:id', async (req, res, next) => {
     next(err)
   }
 })
+
 router.delete('/users/:id', async (req, res, next) => {
   // Parámetro id del usuario para listarlo
   const { id } = req.params
@@ -81,11 +82,11 @@ router.delete('/users/:id', async (req, res, next) => {
 })
 
 // Metodo get para editar al usuario
-router.post('/edituser/:id', async (req, res, next) => {
+router.post('/edituser/:usuario_id', async (req, res, next) => {
   // Empesamos con el try
   // Parámetro id extraido de la ruta
-  const { id } = req.params
-  const { name, codstud, facultad, escuela } = req.body
+  const { usuario_id } = req.params
+  const { name, facultad, escuela } = req.body
   // Constante newUser user donde se guardan los parámetros del cuerpo
 
   const newUser = {
@@ -95,9 +96,6 @@ router.post('/edituser/:id', async (req, res, next) => {
     newUser['name'] = name
   }
 
-  if (codstud !== undefined) {
-    newUser['codstud'] = codstud
-  }
 
   if (facultad !== undefined) {
     newUser['facultad'] = facultad
@@ -108,30 +106,29 @@ router.post('/edituser/:id', async (req, res, next) => {
   }
   console.log(newUser)
   // Se accede a la BD y se realiza un update a traves de la variable newUser y el parametro id
-  await pool.query('UPDATE usuarios set ? WHERE id = ?', [newUser, id])
+  await pool.query('UPDATE usuarios set ? WHERE usuario_id = ?', [newUser, usuario_id])
 
   // Se accede a la BD y se seleciona al usuario previamente updateado a través del parametro id
   // Se guardan los nuevos datos del usuario en la variable user1
-  const user1 = await pool.query('SELECT * FROM usuarios WHERE id = ?', [id])
+  const user1 = await pool.query('SELECT * FROM usuarios WHERE usuario_id = ?', [usuario_id])
 
-  // Respuesta a la peticion
-  res.status(200).json({
+  // Respuesta a la peticionn
+  res.status(200).json({   
     // Se devuelve el usuario updateado al Frontend
     user1
   })
 })
-
 // Metodo POST para crear un nuevo usuario
 router.post('/register', async (req, res, next) => {
   // Parámetros necesarios para crear al nuevo usuario
-  const { name, id, password, email, facultad, escuela } = req.body
+  const { usuario_id, name, email, facultad, escuela, password} = req.body
 
   // Si el password es nulo la data es inválida
   if (!password) {
     // Respuesta a la peticion return
     return res.status(400).json({
       // Se notifica al frontend que la data es inválida
-      error: 'data invalid'
+      error: 'data invalidaaaaa'
     })
   }
 
@@ -146,8 +143,8 @@ router.post('/register', async (req, res, next) => {
 
   // se crear la variable newUser con los campos necesarios para guardarla en la BD
   let newUser = {
+    usuario_id,
     name,
-    id,
     email,
     facultad,
     escuela,

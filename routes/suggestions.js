@@ -77,18 +77,18 @@ router.put('/votarSugerencias', async (req, res, next) => {
   // Metodo para votar sugerencias
 
   //Variables que sus datos son ingresados por el body
-  const { usuario_id, sugerencia_id } = req.body
+  const { id, sugerencia_id } = req.body
 
   //Se crea una nueva variable para guardar los datos de usuario y sugerencia
   let votos_nuevo = {
-    usuario_id,
+    id,
     sugerencia_id
   }
   //Si es correcto 
   try {
 
     // Se accede a la BD para listar todos los votos de un usario
-    let votos_usuario = await pool.query('SELECT * FROM heroku_b3e0382f6ba83ba.votos WHERE usuario_id = ?', [usuario_id])
+    let votos_usuario = await pool.query('SELECT * FROM heroku_b3e0382f6ba83ba.votos WHERE id = ?', [id])
 
     //Lo que han ingresado
     //console.log(votos_nuevo)
@@ -111,7 +111,7 @@ router.put('/votarSugerencias', async (req, res, next) => {
     //Si se encuentra en la tabla
     else {
       //Se Elimina
-      await pool.query(' DELETE FROM heroku_b3e0382f6ba83ba.votos WHERE usuario_id = ? AND sugerencia_id = ? ', [usuario_id, sugerencia_id])
+      await pool.query(' DELETE FROM heroku_b3e0382f6ba83ba.votos WHERE id = ? AND sugerencia_id = ? ', [id, sugerencia_id])
 
       //Respuesta a la peticion
       res.status(200).json({
@@ -136,7 +136,7 @@ router.get('/listarVotosUsuario/:idUsuario', async (req, res, next) => {
   const { idUsuario } = req.params
 
   //cuando es correcto
-  let list = await pool.query('SELECT * FROM heroku_b3e0382f6ba83ba.votos WHERE usuario_id = ?', [idUsuario])
+  let list = await pool.query('SELECT * FROM heroku_b3e0382f6ba83ba.votos WHERE id = ?', [idUsuario])
 
   // Respuesta a la peticion, se manda un mensaje 
   res.status(200).json({
