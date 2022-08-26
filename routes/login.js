@@ -20,7 +20,7 @@ router.get('/login', async (req, res) => {
 // Metudo post para logear al usuario
 router.post('/login', async (req, res) => {
   // Parámetros del login con el correo y el password.
-  const { correo, password } = req.body
+  const {correo, password } = req.body
 
   // Se realiza la petición para seleccionar todos campos del usuario a la BD
   // Se guarda los datos en la constante user
