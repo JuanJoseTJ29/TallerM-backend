@@ -43,7 +43,7 @@ router.get('/users/:usuario_id', async (req, res, next) => {
   try {
     // Se accede a la BD y se seleciona  al usuarios a través de su id única
     // Los datos del usuario se guarda en la variable user
-    let user = await pool.query('SELECT * FROM usuarios WHERE usuario_id = ?', [usuario_id])
+    let user = await pool.query('SELECT * FROM usuarios WHERE _id = ?', [usuario_id])
     // Respuesta a la peticion
     res.status(200).json({
       // Se devuelve el usuario al Frontend
@@ -144,6 +144,7 @@ router.post('/register', async (req, res, next) => {
 
   // se crear la variable newUser con los campos necesarios para guardarla en la BD
   let newUser = {
+    _id: usuario_id,
     name,
     email,
     facultad,

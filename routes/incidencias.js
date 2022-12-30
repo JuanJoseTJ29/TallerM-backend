@@ -41,28 +41,18 @@ router.post('/incidencias',
 
 async  (req, res, next) =>  {
  // if(file) {
-  let { titulo, lugar, categoria, descripcion, id_usuario: id_usuarios } = req.body
-  const file = req.files.image 
-
-  const resulta = await cloudinary.uploader.upload(file.tempFilePath, {
-    public_id: `${Date.now}`,
-    resource_type: "auto",
-    folder: between(10, 2000)
-})
-
-  let fotoo = `${resulta.url}`
+  let { titulo, lugar, categoria, descripcion} = req.body
 
   let newIncidencia = {
     titulo,
     lugar,
     categoria,
-    descripcion,
-    foto:fotoo,
-    id_usuarios
+    descripcion
   }
-  console.log(newIncidencia)
+  console.log(req.body)
   try {
     const a = await pool.query('INSERT INTO incidencias set ? ', newIncidencia)
+    console.log(a)
     res.status(200).json({
       a
     })
@@ -71,17 +61,35 @@ async  (req, res, next) =>  {
     // EMpezamos con el catch
   } catch (err) {
     // Envio a middleware
+    console.log(err)
     next(err)
   }
 //}
 }
 )
+
+router.get('/incidencias', async (req, res, next) => {
+  try {
+    const incidencias = await pool.query('SELECT * FROM incidencias')
+    console.log(incidencias)
+    res.status(200).json({
+      incidencias
+    })
+
+    // Manejo de errror
+    // EMpezamos con el catch
+  } catch (err) {
+    // Envio a middleware
+    next(err)
+  }
+})
+
 //router.get('/images', (req, res) => {});
 router.get('/incidencias/:id', async (req, res, next) => {
   const { id } = req.params
 
   try {
-    const incidencias = await pool.query('SELECT * FROM incidencias WHERE id_usuarios = ?', [id])
+    const incidencias = await pool.query('SELECT * FROM incidencias WHERE id_incidencias = ?', [id])
     res.status(200).json({
       incidencias
     })
@@ -97,9 +105,10 @@ router.get('/incidencias/:id', async (req, res, next) => {
 // Metodo get para eliminar la unica incidencia.
 router.delete('/incident/:id', async (req, res, next) => {
   const { id } = req.params
-  console.log(id)
+  console.log("Se elimino-------")
   try {
     let incidencia = await pool.query('DELETE FROM incidencias WHERE id_incidencias = ?', [id])
+    console.log(incidencia)
     res.status(200).json({
       incidencia
     })
