@@ -121,6 +121,7 @@ router.post('/edituser/:usuario_id', async (req, res, next) => {
 // Metodo POST para crear un nuevo usuario
 router.post('/register', async (req, res, next) => {
   // Parámetros necesarios para crear al nuevo usuario
+  console.log("Hola")
   const { usuario_id, name, email, facultad, escuela, password} = req.body
 
   // Si el password es nulo la data es inválida
@@ -143,14 +144,13 @@ router.post('/register', async (req, res, next) => {
 
   // se crear la variable newUser con los campos necesarios para guardarla en la BD
   let newUser = {
-    usuario_id,
     name,
     email,
     facultad,
     escuela,
     password: usuario_contrasenia
   }
-
+  console.log(req.body)
   // Empesamos con el try
   try {
     // Se accede a la BD y se inserta o guarda al muevo usuario
@@ -163,6 +163,7 @@ router.post('/register', async (req, res, next) => {
     // Respuesta a la peticion
     res.status(201).json(usuario[0])
   } catch (e) {
+    console.log(e)
     // Se maneja los errores en caso de haberlo
     // Respuesta a la peticion   
     next(e)

@@ -17,6 +17,15 @@ router.get('/login', async (req, res) => {
   })
 })
 
+router.get('/login1', async (req, res) => {
+  // Respuesta a la peticion
+  const user = await pool.query('SELECT * FROM usuarios')
+  console.log(user)
+  res.status(200).json({
+    user: user
+  }) 
+})
+
 // Metudo post para logear al usuario
 router.post('/login', async (req, res) => {
   // Parámetros del login con el correo y el password.
